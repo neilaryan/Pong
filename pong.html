@@ -1,99 +1,99 @@
 <div style="text-align: center;">
-<canvas id="gc" width="400" height="400"></canvas>
-</div>
-
-<div style="text-align: center;">
-    <h2 style="position: left; left:30px; margin-top: 50px;">Created by Neil Aryan</h2>
-    <a href="https://neilaryan.github.io/snake/snake.html"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-rt57DgtyjVKDBV_dxc_5YNEGxoJX4kAB4A&usqp=CAU"><a>
-    <h3>Click the above image to play Snake, or click this to go to the home menu.</h3>
-</div>
-<script type="text/javascript">
-
-  PositionY = PositionY2 = 40;
-  pthick = 10;
-  height = 100;
-  ballx = bally = 50;
-  bd = 6;
-  velocityX = velocityY = 10;
-  score1 = score2 = 0;
-  aiSpeed = 8;
-
-  window.onload = ()=> {
-    c = document.getElementById('gc');
-    cc = c.getContext('2d');
-    cc.font = '20px Arial';
-    setInterval(update, 1000/30);
-    c.addEventListener('mousemove', (e)=> {
-      PositionY = e.clientY-height/2;
-    });
-  }
-
-  function reset() {
-    ballx = c.width/2;
-    ballyx = c.height/2;
-    velocityX = -velocityX;
-    velocityY = 3;
-  }
-
-  function update() {
-    ballx += velocityX;
-    bally += velocityY;
-
-    if (bally < 0 && velocityY < 0) {
-      velocityY = -velocityY;
+  <canvas id="gc" width="400" height="400"></canvas>
+  </div>
+  
+  <div style="text-align: center;">
+      <h1 style="position: left; left:30px; margin-top: -0px;">Created by Neil Aryan</h1>
+      <a href="https://neilaryan.github.io/snake/snake.html" style="position: left; left:30px; margin-top: -0px;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-rt57DgtyjVKDBV_dxc_5YNEGxoJX4kAB4A&usqp=CAU"><a>
+      <h3>Click the above image to play Snake, or click this to go to the home menu.</h3>
+  </div>
+  <script type="text/javascript">
+  
+    PositionY = PositionY2 = 40;
+    pthick = 10;
+    height = 100;
+    ballx = bally = 50;
+    bd = 6;
+    velocityX = velocityY = 10;
+    score1 = score2 = 0;
+    aiSpeed = 8;
+  
+    window.onload = ()=> {
+      c = document.getElementById('gc');
+      cc = c.getContext('2d');
+      cc.font = '20px Arial';
+      setInterval(update, 1000/30);
+      c.addEventListener('mousemove', (e)=> {
+        PositionY = e.clientY-height/2;
+      });
     }
-
-    if (bally > c.height && velocityY > 0) {
-      velocityY = -velocityY;
+  
+    function reset() {
+      ballx = c.width/2;
+      ballyx = c.height/2;
+      velocityX = -velocityX;
+      velocityY = 3;
     }
-
-    // Ball bouncing off left side
-    if (ballx < 0) {
-      if (bally > PositionY && bally < PositionY + height) {
-        velocityX = -velocityX;
-        deltaY = bally - (PositionY + height/2);
-        velocityY = deltaY*0.3;
-      } else {
-        score2++;
-        reset();
+  
+    function update() {
+      ballx += velocityX;
+      bally += velocityY;
+  
+      if (bally < 0 && velocityY < 0) {
+        velocityY = -velocityY;
       }
-    }
-
-    // Ball bouncing off right side
-    if (ballx > c.width) {
-      if (bally > PositionY2 && bally < PositionY2 + height) {
-        velocityX = -velocityX;
-        deltaY = bally - (PositionY2 + height/2);
-        velocityY = deltaY*0.3;
-      } else {
-        score1++;
-        reset();
+  
+      if (bally > c.height && velocityY > 0) {
+        velocityY = -velocityY;
       }
+  
+      // Ball bouncing off left side
+      if (ballx < 0) {
+        if (bally > PositionY && bally < PositionY + height) {
+          velocityX = -velocityX;
+          deltaY = bally - (PositionY + height/2);
+          velocityY = deltaY*0.3;
+        } else {
+          score2++;
+          reset();
+        }
+      }
+  
+      // Ball bouncing off right side
+      if (ballx > c.width) {
+        if (bally > PositionY2 && bally < PositionY2 + height) {
+          velocityX = -velocityX;
+          deltaY = bally - (PositionY2 + height/2);
+          velocityY = deltaY*0.3;
+        } else {
+          score1++;
+          reset();
+        }
+      }
+  
+      // AI movement
+      if (PositionY2+height/2 < bally || PositionY2+height/2 < bally+10) {
+        PositionY2 += aiSpeed;
+      }
+      if (PositionY2+height/2 > bally || PositionY2+height/2 > bally-10) {
+        PositionY2 -= aiSpeed;
+      }
+  
+      // Background
+      cc.fillStyle = 'Gray';
+      cc.fillRect(0, 0, c.width, c.height);
+      // Ball
+      cc.fillStyle = 'firebrick';
+      cc.fillRect(ballx-bd/2, bally-bd/2, bd, bd);
+      // Paddle 1
+      cc.fillStyle = 'Blue';
+      cc.fillRect(0, PositionY, pthick, height);
+      // Score 1
+      cc.fillText(score1, 100, 50);
+      // Paddle 2
+      cc.fillStyle = 'Red';
+      cc.fillRect(c.width-pthick, PositionY2, pthick, height);
+      // Score 2
+      cc.fillText(score2, c.width-100, 50);
     }
-
-    // AI movement
-    if (PositionY2+height/2 < bally || PositionY2+height/2 < bally+10) {
-      PositionY2 += aiSpeed;
-    }
-    if (PositionY2+height/2 > bally || PositionY2+height/2 > bally-10) {
-      PositionY2 -= aiSpeed;
-    }
-
-    // Background
-    cc.fillStyle = 'Gray';
-    cc.fillRect(0, 0, c.width, c.height);
-    // Ball
-    cc.fillStyle = 'firebrick';
-    cc.fillRect(ballx-bd/2, bally-bd/2, bd, bd);
-    // Paddle 1
-    cc.fillStyle = 'Blue';
-    cc.fillRect(0, PositionY, pthick, height);
-    // Score 1
-    cc.fillText(score1, 100, 50);
-    // Paddle 2
-    cc.fillStyle = 'Red';
-    cc.fillRect(c.width-pthick, PositionY2, pthick, height);
-    // Score 2
-    cc.fillText(score2, c.width-100, 50);
-  }
-</script>
+  </script>
